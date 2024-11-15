@@ -61,6 +61,9 @@ type User struct {
 
 	AvatarURL string      // CDN URL to the user's profile picture, empty if unset
 	Avatar    image.Image // Profile picture, nil if unset or not yet fetched
+
+	CreatedAt string // When was this record created
+	IndexedAt string // When was this record last seen/updated
 }
 
 // FetchProfile retrieves all the metadata about a specific user.
@@ -221,6 +224,12 @@ func (p *Profile) StreamFollowers(ctx context.Context) (<-chan *User, <-chan err
 					Handle: follower.Handle,
 					DID:    follower.Did,
 				}
+				if follower.IndexedAt != nil {
+					f.IndexedAt = *follower.IndexedAt
+				}
+				if follower.CreatedAt != nil {
+					f.CreatedAt = *follower.CreatedAt
+				}
 				if follower.DisplayName != nil {
 					f.Name = *follower.DisplayName
 				}
@@ -302,6 +311,12 @@ func (p *Profile) StreamFollowees(ctx context.Context) (<-chan *User, <-chan err
 					client: p.client,
 					Handle: followee.Handle,
 					DID:    followee.Did,
+				}
+				if followee.IndexedAt != nil {
+					f.IndexedAt = *followee.IndexedAt
+				}
+				if followee.CreatedAt != nil {
+					f.CreatedAt = *followee.CreatedAt
 				}
 				if followee.DisplayName != nil {
 					f.Name = *followee.DisplayName
