@@ -64,6 +64,9 @@ type User struct {
 
 	CreatedAt string // When was this record created
 	IndexedAt string // When was this record last seen/updated
+
+	ViewerFollowedBy string
+	ViewerFollowing  string
 }
 
 // FetchProfile retrieves all the metadata about a specific user.
@@ -223,6 +226,12 @@ func (p *Profile) StreamFollowers(ctx context.Context) (<-chan *User, <-chan err
 					client: p.client,
 					Handle: follower.Handle,
 					DID:    follower.Did,
+				}
+				if follower.Viewer != nil && follower.Viewer.Following != nil {
+					f.ViewerFollowing = *follower.Viewer.Following
+				}
+				if follower.Viewer != nil && follower.Viewer.FollowedBy != nil {
+					f.ViewerFollowedBy = *follower.Viewer.FollowedBy
 				}
 				if follower.IndexedAt != nil {
 					f.IndexedAt = *follower.IndexedAt
