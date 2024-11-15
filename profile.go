@@ -321,6 +321,12 @@ func (p *Profile) StreamFollowees(ctx context.Context) (<-chan *User, <-chan err
 					Handle: followee.Handle,
 					DID:    followee.Did,
 				}
+				if followee.Viewer != nil && followee.Viewer.Following != nil {
+					f.ViewerFollowing = *followee.Viewer.Following
+				}
+				if followee.Viewer != nil && followee.Viewer.FollowedBy != nil {
+					f.ViewerFollowedBy = *followee.Viewer.FollowedBy
+				}
 				if followee.IndexedAt != nil {
 					f.IndexedAt = *followee.IndexedAt
 				}
