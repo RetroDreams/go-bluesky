@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/bluesky-social/indigo/api/atproto"
+	"github.com/bluesky-social/indigo/lex/util"
 )
 
 func (c *Client) GetRecord(did, collection, rkey string) *atproto.RepoGetRecord_Output {
@@ -19,6 +20,18 @@ func (c *Client) DeleteRecord(did, collection, rkey string) *atproto.RepoDeleteR
 		Collection: collection,
 		Repo:       did,
 		Rkey:       rkey,
+	})
+	if err != nil {
+		panic(err)
+	}
+	return output
+}
+
+func (c *Client) CreateRecord(repo, collection string, record util.LexiconTypeDecoder) *atproto.RepoCreateRecord_Output {
+	output, err := atproto.RepoCreateRecord(context.TODO(), c.client, &atproto.RepoCreateRecord_Input{
+		Collection: collection,
+		Repo:       repo,
+		Record:     &record,
 	})
 	if err != nil {
 		panic(err)
