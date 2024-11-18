@@ -27,7 +27,7 @@ func (c *Client) DeleteRecord(did, collection, rkey string) *atproto.RepoDeleteR
 	return output
 }
 
-func (c *Client) CreateRecord(repo, collection string, record util.LexiconTypeDecoder) *atproto.RepoCreateRecord_Output {
+func (c *Client) CreateRecord(collection, repo, string, record util.LexiconTypeDecoder) *atproto.RepoCreateRecord_Output {
 	output, err := atproto.RepoCreateRecord(context.TODO(), c.client, &atproto.RepoCreateRecord_Input{
 		Collection: collection,
 		Repo:       repo,
